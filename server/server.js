@@ -12,7 +12,7 @@ var io = socketIO(server);
 
 app.use(express.static(publicPath));
 
-var {generateMessage} = require('./utils/message');
+var {generateMessage, generateLocationMessage} = require('./utils/message');
 
 io.on('connection', (socket) => {
   console.log('New user connected');
@@ -26,6 +26,10 @@ io.on('connection', (socket) => {
     var {from, content} = message;
     io.emit('newMessage', generateMessage(from, content));
     callback('From server');
+  });
+
+  socket.on('createLocationMessage', (coords) => {
+    io.emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude, coords.longitude));
   });
 
   socket.on('disconnect', () => {
