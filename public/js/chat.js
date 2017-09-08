@@ -68,7 +68,6 @@ $('#message-form').on('submit', function (e) {
   e.preventDefault();
 
   socket.emit('createMessage', {
-    from: 'User',
     content: $('[name="message"]').val()
   }, function () {
     $('[name="message"]').val('');
