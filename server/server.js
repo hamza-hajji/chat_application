@@ -23,8 +23,14 @@ io.on('connection', (socket) => {
 
 
   socket.on('join', (params, callback) => {
+    var userExists = users.getUserList(params.room).indexOf(params.name) !== -1;
+
     if (!isValidString(params.name) || !isValidString(params.room))
       return callback('Name and Room are required');
+    if (userExists)
+      return callback('Name already exists in this room');
+
+    params.room = params.room.toLowerCase(); // now all rooms are lowercase
 
     socket.join(params.room);
 
